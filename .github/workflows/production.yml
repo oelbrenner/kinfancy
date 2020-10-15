@@ -20,12 +20,16 @@ jobs:
         env:
           HUGO_VERSION: 0.59.1
       - name: Hugo Build
-        run: $HOME/hugo -v
+        run: |
+          cd insurance-estimate
+          $HOME/hugo -v
       - name: Deploy to S3
-        run: $HOME/hugo -v deploy --maxDeletes -1
+        run: |
+          cd insurance-estimate
+          $HOME/hugo -v deploy --maxDeletes -1
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_PROD }}
       - name: Knock over CloudFront distro
         run: aws cloudfront create-invalidation --distribution-id FOO --paths "/*"
 
