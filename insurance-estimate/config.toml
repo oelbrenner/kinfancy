@@ -1,4 +1,20 @@
-baseURL = "http://example.org/"
+baseurl = "http://kinsurrection-production.s3-website.use-east-1.amazonaws.com/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "kinsurrection"
 theme = "ananke"
+
+[deployment]
+order = [".png$", ".jpg$", ".gif$", ".svg$"]
+
+[[deployment.targets]]
+URL = "s3://kinsurrection-production?region=us-east-1"
+
+[[deployment.matchers]]
+# Cache static assets for 20 years.
+pattern = "^.+\\.(js|css|png|jpg|gif|svg|ttf)$"
+cacheControl = "max-age=630720000, no-transform, public"
+gzip = true
+
+[[deployment.matchers]]
+pattern = "^.+\\.(html|xml|json)$"
+gzip = true
